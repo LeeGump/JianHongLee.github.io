@@ -1,123 +1,27 @@
-
-
-
-
-
-
-
-
-<!doctype html>
-<html lang="">
-
-<script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
-<script type="text/javascript" 
-src="//cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js">
-</script>
-<link href=  "/plugins/code-theme/tomorrow.css" type="text/css" rel="stylesheet" />
-<link rel="stylesheet" href="/plugins/github-markdown.css">
-
-<head>
-  <meta charset="UTF-8" name="viewport" content="width=device-width,initial-scale=1">
-  
-    
-    
-      <link rel="stylesheet" href="/css/legend.css">
-    
-  
-</head>
-
-<body id="body-archive-bg">
-<div id="layout-content">
-  <div id="menu-outer-x">
-  <div id="menu-inner">
-    
-    
-    <div id="site-title">
-      Hexo
-    </div>
-    
-
-     
-    <div>
-    
-      
-      <a href="/">首页</a>
-      
-    
-      
-      <a href="/archives">归档</a>
-      
-    
-    </div>
-  </div>
-</div> 
-  <div id="content-outer">
-    <div id="content-inner">
-      
-      
-<div id="archive-outer">
-  <div id="archive-inter">
-      
-       
-        <div classets="archive-item">
-           
-            
-             
-             
-             <div id="archive-year"> 2017年 </div>
-           
-           
-            
-            <a href="/2017/11/30/hello-world/">
-              <time id="archive-item-time" datetime="2017-11-30T14:48:21.041Z">
-                11-30
-              </time>
-              Hello World 
-            </a>
-          
-        </div>
-      
-    </div>
-</div>
-
-    </div>
-  </div>
-</div>
-
-
-
-<div id="bottom-outer">
-  
-  <div id="bottom-inner">
-    John Doe 
-    ©2017 |Powered by  
-    <a href="http://hexo.io" target="_blank">Hexo</a> with theme 
-    <a href="https://github.com/iHongRen/legend" target="_blank">legend-master</a>
-  </div>
-    
-    
-    
-      <a href="/atom.xml">
-      
-      <img src=/images/rss.png height="18" width="18">
-      
-</div> 
-
-
-  
-  
-    <script src="/js/legend.js"></script>
-  
-
-
-</body>
-</html>
-
-
-<script>
-$(window).on('load', function(){
-   $('pre').addClass('prettyprint').attr('style', 'overflow:auto;');
-   prettyPrint();
- });
-</script>
-
+extends ./_partial/layout.pug
+block content
+  include ./_partial/page_header.pug
+  ul.post-list(style='max-width:'+ theme.content_width +'px')
+    each post in page.posts.data
+      li 
+        p.date #{time(post.date, 'LL')}
+        if post.title
+          h4.title
+            a(href=url_for(post.path)) #{post.title}
+          .excerpt !{post.excerpt}
+        else
+          .no-title !{post.content}
+        if post.photos && post.photos.length
+          a(href=url_for(post.path))
+            img.photo(src=post.photos[0])
+        ul.meta
+          li
+            i.icon.icon-author
+            | #{config.author}
+          li
+            i.icon.icon-clock
+            | #{parseInt(post.content ? post.content.length/900 : 0)} Minutes
+          li
+            i.icon.icon-category
+            | !{list_categories(post.categories)}
+  include ./_partial/pagination.pug
